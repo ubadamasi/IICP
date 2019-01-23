@@ -20,6 +20,8 @@ namespace App.Main.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> Login() => View();
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
