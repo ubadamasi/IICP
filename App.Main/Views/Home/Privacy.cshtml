@@ -1,8 +1,8 @@
-﻿@{
+﻿@model IEnumerable<App.Main.Models.Value>
+
+@{
     ViewData["Title"] = "Test Page";
 }
-<h1>Values Page</h1>
-
 <div class="mt-2 col-md-6">
     <form action="#" method="post">
         <div class="form-group">
@@ -12,10 +12,27 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
-
-@*<form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="text" placeholder="Username" />
-    <input class="form-control mr-sm-2" type="password" placeholder="Password" />
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-</form>*@
+<hr/>
+<h2>List of Values</h2>
+@if (!Model.Any())
+{
+<p>No values added</p>    
+}
+else {
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (var item in Model)
+      {
+        <tr>
+            <td>item.Name</td>
+        </tr>
+      }
+    
+  </tbody>
+</table>
+}
