@@ -29,6 +29,14 @@ namespace App.Main.Controllers
             return View(values);
         }
 
+        [HttpPost]
+        public IActionResult AddValue(Value value)
+        {
+            _repo.Add(value);
+            _repo.SaveAll();
+            return View();
+        }
+
         //public async Task<IActionResult> Login() => View();
 
         // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

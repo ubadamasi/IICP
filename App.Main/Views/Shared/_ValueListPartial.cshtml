@@ -1,0 +1,25 @@
+@model IEnumerable<App.Main.Models.Value>
+
+<h2>List of Values</h2>
+@if (!Model.Any())
+{
+<p>No values added</p>    
+}
+else {
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (var rec in Model)
+      {
+        <tr>
+            <td>@Html.DisplayFor(model => rec.Name)</td>
+        </tr>
+      }
+    
+  </tbody>
+</table>
+}

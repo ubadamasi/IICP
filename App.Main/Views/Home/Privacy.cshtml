@@ -1,38 +1,37 @@
-﻿@model IEnumerable<App.Main.Models.Value>
-
+﻿
 @{
     ViewData["Title"] = "Test Page";
 }
 <div class="mt-2 col-md-6">
     <form action="#" method="post">
         <div class="form-group">
-            <label for="Name">Name</label>
-            <input type="text" class="form-control" id="NameTxt" placeholder="Name">
+            <input type="text" class="form-control" id="NameTxt" placeholder="Name" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" onsubmit="AddValue()" class="btn btn-primary">Submit</button>
     </form>
 </div>
 <hr/>
-<h2>List of Values</h2>
-@if (!Model.Any())
-{
-<p>No values added</p>    
-}
-else {
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-    </tr>
-  </thead>
-  <tbody>
-      @foreach (var item in Model)
-      {
-        <tr>
-            <td>item.Name</td>
-        </tr>
-      }
-    
-  </tbody>
-</table>
+<partial name="_ValueListPartial" />
+<!-- @Html.Partial("_ValueListPartial") -->
+
+@section scripts {
+    <script>
+        $(document).ready(function(){
+
+            var name = document.getElementById('NameTxt')
+            function AddValue(){
+                $.ajax({
+                   type: "POST",
+                   url : "/Home/AddValue",
+                   data: "name",
+                   success: function(result){
+                       alert('success');
+                   }, 
+                   error : function(e){
+                       alert('error');
+                   }
+                });
+            }
+        });
+    </script>
 }
