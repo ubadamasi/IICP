@@ -23,10 +23,23 @@ namespace App.Main.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Privacy(Value value)
+        public async Task<IActionResult> Privacy()
         {
             var values = await _repo.GetValues();
             return View(values);
+        }
+
+        [HttpPost]
+        public IActionResult AddValue(string name)
+        {
+            var value = new Value()
+            {
+                 Name = name
+            };
+
+            _repo.Add(value);
+            _repo.SaveAll();
+            return Ok();
         }
 
         //public async Task<IActionResult> Login() => View();

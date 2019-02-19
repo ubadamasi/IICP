@@ -1,0 +1,54 @@
+﻿@model App.WithAuthentication.ViewModels.CompanyViewModel
+
+@{
+    ViewData["Title"] = "New";
+}
+
+<h2>New Company</h2><hr />
+
+
+<form method="post" asp-action="Save" asp-controller="Company">
+    <div class="form-group">
+        <label asp-for="Company.Name"></label>
+        <input asp-for="Company.Name" class="form-control" />
+        <span asp-validation-for="Company.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Company.RcNumber"></label>
+        <input asp-for="Company.RcNumber" class="form-control" />
+        <span asp-validation-for="Company.RcNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Company.Address"></label>
+        <input asp-for="Company.Address" class="form-control" />
+        <span asp-validation-for="Company.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Company.Email"></label>
+        <input asp-for="Company.Email" class="form-control" />
+        <span asp-validation-for="Company.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Company.Phone"></label>
+        <input asp-for="Company.Phone" class="form-control" />
+        <span asp-validation-for="Company.Phone" class="text-danger"></span>
+    </div>
+
+    @*<div class="form-group">
+        <label asp-for="Company.ApplicationStatusId"></label>
+        @Html.DropDownListFor(c => c.Company.ApplicationStatusId, new SelectList(Model.ApplicationStatuses, "Id", "CurrentStatus"), "--Select Status--", new { @class = "form-control" })
+        <span asp-validation-for="Company.Phone" class="text-danger"></span>
+    </div>*@
+    <div class="form-group form-check">
+        <input asp-for="Company.IsActive" type="checkbox" class="form-check-input" />
+        <label asp-for="Company.IsActive" class="form-check-label">Activate Account? </label>
+        <span asp-validation-for="Company.IsActive" class="text-danger"></span>
+    </div>
+
+    @Html.HiddenFor(c => c.Company.Id)
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<script>
+
+</script>

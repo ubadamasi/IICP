@@ -1,0 +1,41 @@
+﻿@model IEnumerable<App.WithAuthentication.Models.Company>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>List of Companies</h2><hr />
+<p>
+    <a asp-area="" asp-controller="Company" asp-action="CustomerForm" class="btn btn-success"><i class="fa fa-new"></i> New Company</a>
+</p>
+
+
+
+@if (!Model.Any())
+{
+    <p>No Companies registered</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>RC Number</th>
+                <th>Email</th>
+                <th>Registration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rec in Model)
+            {
+                <tr>
+                    <td><a class="text-dark" asp-route-id="@rec.Id" asp-controller="Company" asp-action="Edit">@rec.Name</a></td>
+                    @*<td>@rec.Name</td>*@
+                    <td>@rec.RcNumber</td>
+                    <td>@rec.Email</td>
+                    <td>@rec.LogDate.ToLongDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
