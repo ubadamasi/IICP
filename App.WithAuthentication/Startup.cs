@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using App.WithAuthentication.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using App.WithAuthentication.AutoMapperProfile;
 
 namespace App.WithAuthentication
 {
@@ -28,12 +30,15 @@ namespace App.WithAuthentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Mapper.Initialize(c => c.AddProfile<DomainProfile>());
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,6 +48,7 @@ namespace App.WithAuthentication
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

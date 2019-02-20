@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.WithAuthentication.Dtos;
 using App.WithAuthentication.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.WithAuthentication.Data
@@ -30,6 +32,10 @@ namespace App.WithAuthentication.Data
         {
             var companies = await _dbContext.Companies.ToListAsync();
             return companies;
+            //var companies = _dbContext.Companies.ToList().Select(Mapper.Map<Company, CompanyDto>);
+            //var companies2 = companies.ToList();
+            //var companies3 = await companies2.tolist
+
         }
 
         public async Task<Company> GetCompany(int id)

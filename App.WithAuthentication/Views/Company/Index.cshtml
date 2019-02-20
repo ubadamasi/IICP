@@ -1,41 +1,87 @@
-﻿@model IEnumerable<App.WithAuthentication.Models.Company>
+﻿
 @{
     ViewData["Title"] = "Index";
 }
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+
 
 <h2>List of Companies</h2><hr />
 <p>
     <a asp-area="" asp-controller="Company" asp-action="CustomerForm" class="btn btn-success"><i class="fa fa-new"></i> New Company</a>
 </p>
 
+<table id="companies" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>RC Number</th>
+            <th>Email</th>
+            <th>Registration Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
+@section scripts
+    {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
 
-@if (!Model.Any())
-{
-    <p>No Companies registered</p>
-}
-else
-{
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Company Name</th>
-                <th>RC Number</th>
-                <th>Email</th>
-                <th>Registration Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rec in Model)
-            {
-                <tr>
-                    <td><a class="text-dark" asp-route-id="@rec.Id" asp-controller="Company" asp-action="Edit">@rec.Name</a></td>
-                    @*<td>@rec.Name</td>*@
-                    <td>@rec.RcNumber</td>
-                    <td>@rec.Email</td>
-                    <td>@rec.LogDate.ToLongDateString()</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            var table = $("#companies").DataTable({
+                ajax: {
+                    url: "/api/company",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, company) {
+                            return "<a href='/company/edit/" + company.id + "'>" + company.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "rcNumber",
+                    },
+                    {
+                        data: "email",
+                    },
+                    {
+                        data: "logDate",
+                        //render: $.fn.dataTable.render.moment('Do MMM YYYYY')
+                        //render: function (d) {
+                            //return moment(d).format("DD:MM:YYYY");
+                            
+                        //}
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn btn-link js-delete' data-company-id=" + data + "> Delete</button>";
+                        }
+                    },
+
+                ]
+            });
+
+            $("#companies").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                if (confirm("Are you sure you want to delete this company?")) {
+                    $.ajax({
+                        url: "/api/Company/" + $(this).attr("data-company-id"),
+                        method: "DELETE",
+                        success: function () {
+                            table.row(button.parents("tr")).remove().draw();
+                            toastr.error("Deleted Successfully!");
+                            //button.parents("tr").remove();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }

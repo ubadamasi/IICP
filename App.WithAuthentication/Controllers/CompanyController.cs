@@ -26,10 +26,10 @@ namespace App.WithAuthentication.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //var companies = await _dbContext.Companies.ToListAsync();
-            var companies = await _repo.GetCompanies();
-            //return Ok(companies);
-            return View(companies);
+
+            //var companies = await _repo.GetCompanies();
+            //return View(companies);
+            return View();
         }
 
         [HttpPost]
@@ -51,14 +51,14 @@ namespace App.WithAuthentication.Controllers
             }
             else
             {
-                var customerInDb = await _repo.GetCompany(company.Id);
-                customerInDb.Name = company.Name;
-                customerInDb.RcNumber = company.RcNumber;
-                customerInDb.Address = company.Address;
-                customerInDb.Email = company.Email;
-                customerInDb.Phone = company.Phone;
-                customerInDb.IsActive = company.IsActive;
-                customerInDb.LogDate = DateTime.Now;
+                var CompanyInDb = await _repo.GetCompany(company.Id);
+                CompanyInDb.Name = company.Name;
+                CompanyInDb.RcNumber = company.RcNumber;
+                CompanyInDb.Address = company.Address;
+                CompanyInDb.Email = company.Email;
+                CompanyInDb.Phone = company.Phone;
+                CompanyInDb.IsActive = company.IsActive;
+                //customerInDb.LogDate = DateTime.Now;
 
 
             }
@@ -69,8 +69,6 @@ namespace App.WithAuthentication.Controllers
             //return Created(new Uri(Request.Path + "/" + company.Id), company);
         }
 
-
-        [HttpPut]
         public async Task<IActionResult> Edit(int Id)
         {
             var companyDetails = await _repo.GetCompany(Id);
