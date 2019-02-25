@@ -3,5 +3,84 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Name</h1>
+<h2>@Model.Name</h2>
+<strong><em>@Model.Address</em></strong>
+<p>
+    <b>RC:</b> @Model.RcNumber | <b>Email:</b> @Model.Email | <b>Phone:</b> @Model.Phone
+</p>
 
+<hr />
+
+<fieldset>
+    <legend>Applications</legend>
+    <div class="row">
+        <div class=".col-md-3 col-sm-4">
+            <form id="ApplicationsForm">
+                <div class="form-group">
+                    <select class="form-control">
+                        <option value="0">Select Application Type</option>
+                        <option value="OEM">Original Equipment Manufacturer</option>
+                        <option value="ITC">Information Technology Service Provider</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit">Add New Application</button>
+            </form>
+        </div>
+    </div>
+</fieldset>
+
+<label hidden asp-for="Id"></label>
+<hr />
+
+
+@section scripts
+    {
+
+    <script>
+        $(document).ready(function () {
+
+            $("#ApplicationsForm").submit(function (e) {
+                e.preventDefault();
+
+                //var name = $("#name").val();
+                //var rcNumber = $("#rcNumber").val();
+                //var address = $("#address").val();
+                //var email = $("#email").val();
+                //var phone = $("#phone").val();
+
+                //var vm = {
+                //    name: name,
+                //    rcNumber: rcNumber,
+                //    address: address,
+                //    email: email,
+                //    phone: phone,
+                //};
+
+                var vm = 
+                //var a = $("#companyForm").serialize();
+                $.ajax({
+                    url: "/api/Company",
+                    method: "post",
+                    contentType: "application/json",
+                    //data: { name: name, rcNumber: rcNumber, address: address, email: email, phone: phone},
+                    data: JSON.stringify(vm)
+                })
+                    .done(function () {
+                        toastr.success("Save Successfully");
+                        location.reload();
+                        $("#companyModal").hide();
+
+
+                    })
+                    .fail(function () {
+                        toastr.error("Oga something is Wrong oh!");
+                        location.reload();
+                        $("#companyModal").hide();
+
+                    });
+                return false;
+            });
+        }
+    </script>
+
+}

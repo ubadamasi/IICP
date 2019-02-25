@@ -2,13 +2,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
 
 
 <h2>List of Companies</h2><hr />
 <p>
-    <a asp-area="" asp-controller="Company" asp-action="CustomerForm" class="btn btn-success"><i class="fa fa-new"></i> New Company</a>
+    @*<a asp-area="" asp-controller="Company" asp-action="CustomerForm" class="btn btn-success"><i class="fas fa-building"></i> New Company</a>*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#companyModal"><i class="fas fa-folder-plus"></i> Company</button>
 </p>
 
 <table id="companies" class="table table-bordered table-hover">
@@ -17,17 +18,67 @@
             <th>Company Name</th>
             <th>RC Number</th>
             <th>Email</th>
-            <th>Registration Date</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody></tbody>
 </table>
 
+<div class="modal fade" id="companyModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Company</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="companyForm">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="name">Company Name</label>
+                        <input id="name" type="text" required class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="rcNumber">RC Nubmer</label>
+                        <input id="rcNumber" required type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input id="address" type="text" required class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" required class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input id="phone" type="number" required class="form-control" />
+                    </div>
+                    @*<div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="isActive" />
+                            <label for="isActive" class="form-check-label">Activate Account? </label>
+                        </div>*@
+                    @*<input type="submit" value="Submit" class="btn btn-success" id="AddCompany" />*@
+                    @*<button type="submit" class="btn btn-primary" id="submit">Save changes</button>*@
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
 @section scripts
     {
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function () {
 
@@ -40,7 +91,7 @@
                     {
                         data: "name",
                         render: function (data, type, company) {
-                            return "<a href='/company/edit/" + company.id + "'>" + company.name + "</a>";
+                            return "<a href='/company/Details/" + company.id + "'>" + company.name + "</a>";
                         }
                     },
                     {
@@ -50,20 +101,17 @@
                         data: "email",
                     },
                     {
-                        data: "logDate",
-                        //render: $.fn.dataTable.render.moment('Do MMM YYYYY')
-                        //render: function (d) {
-                            //return moment(d).format("DD:MM:YYYY");
-                            
-                        //}
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn btn-link js-delete' data-company-id=" + data + "> Delete</button>";
+                        },
                     },
                     {
                         data: "id",
                         render: function (data) {
-                            return "<button class='btn btn-link js-delete' data-company-id=" + data + "> Delete</button>";
-                        }
+                            return "<a href='/company/Edit/" + data + "' class='btn btn-link'> Edit</a>";
+                        },
                     },
-
                 ]
             });
 
@@ -81,6 +129,48 @@
                         }
                     });
                 }
+            });
+
+
+            $("#companyForm").submit(function (e) {
+                e.preventDefault();
+
+                var name = $("#name").val();
+                var rcNumber = $("#rcNumber").val();
+                var address = $("#address").val();
+                var email = $("#email").val();
+                var phone = $("#phone").val();
+
+                var vm = {
+                    name: name,
+                    rcNumber: rcNumber,
+                    address: address,
+                    email: email,
+                    phone: phone,
+                };
+
+                //var a = $("#companyForm").serialize();
+                $.ajax({
+                    url: "/api/Company",
+                    method: "post",
+                    contentType: "application/json",
+                    //data: { name: name, rcNumber: rcNumber, address: address, email: email, phone: phone},
+                    data: JSON.stringify(vm)
+                })
+                    .done(function () {
+                        toastr.success("Save Successfully");
+                        location.reload();
+                        $("#companyModal").hide();
+                        
+
+                    })
+                    .fail(function () {
+                        toastr.error("Oga something is Wrong oh!");
+                        location.reload();
+                        $("#companyModal").hide();
+                        
+                    });
+                return false;
             });
         });
     </script>

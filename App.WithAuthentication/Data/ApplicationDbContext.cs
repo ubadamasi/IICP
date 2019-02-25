@@ -12,7 +12,8 @@ namespace App.WithAuthentication.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationStatus> ApplicationStatuses { get; set; }
-        //public DbSet<ApplicationType> ApplicationTypes { get; set; }
+        public DbSet<ApplicationType> ApplicationTypes { get; set; }
     }
 }

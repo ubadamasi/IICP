@@ -20,11 +20,11 @@ namespace App.WithAuthentication.Controllers
         {
             _repo = repo;
             _dbContext = dbContext;
-        } 
+        }
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
 
             //var companies = await _repo.GetCompanies();
@@ -110,7 +110,7 @@ namespace App.WithAuthentication.Controllers
             return View(viewModel);
         }
 
-        [Route("Company/{Id:int}")]
+        //[Route("Company/{Id:int}")]
         public async Task<IActionResult> Details(int Id)
         {
             //var viewModel = new Company();

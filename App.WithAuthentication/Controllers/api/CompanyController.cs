@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using App.WithAuthentication.Data;
+using App.WithAuthentication.Dtos;
 using App.WithAuthentication.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,11 +42,22 @@ namespace App.WithAuthentication.Controllers.api
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCompany(Company company)
+        public async Task<IActionResult> CreateCompany(CompanyDto vm)
+        //public async Task<IActionResult> CreateCompany(string name, string address, string rcNumber, string email, string phone)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            var company = new Company()
+            {
+                Name = vm.Name,
+                Address = vm.Address,
+                RcNumber = vm.RcNumber,
+                Email = vm.Email,
+                Phone = vm.Phone,
+                IsActive = true,
+                LogDate = DateTime.Now
+        };
             _repo.Add(company);
             await _repo.SaveAll();
 
