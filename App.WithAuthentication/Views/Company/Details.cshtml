@@ -1,13 +1,9 @@
-﻿@model App.WithAuthentication.Models.Company
+﻿
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.Name</h2>
-<strong><em>@Model.Address</em></strong>
-<p>
-    <b>RC:</b> @Model.RcNumber | <b>Email:</b> @Model.Email | <b>Phone:</b> @Model.Phone
-</p>
+<partial name="_CompanyDetails" />
 
 <hr />
 
@@ -29,9 +25,8 @@
     </div>
 </fieldset>
 
-<label hidden asp-for="Id"></label>
 <hr />
-
+<partial name="_ApplicationList" />
 
 @section scripts
     {
@@ -42,6 +37,7 @@
             $("#ApplicationsForm").submit(function (e) {
                 e.preventDefault();
 
+                var
                 //var name = $("#name").val();
                 //var rcNumber = $("#rcNumber").val();
                 //var address = $("#address").val();
@@ -56,28 +52,28 @@
                 //    phone: phone,
                 //};
 
-                var vm = 
-                //var a = $("#companyForm").serialize();
-                $.ajax({
-                    url: "/api/Company",
-                    method: "post",
-                    contentType: "application/json",
-                    //data: { name: name, rcNumber: rcNumber, address: address, email: email, phone: phone},
-                    data: JSON.stringify(vm)
-                })
-                    .done(function () {
-                        toastr.success("Save Successfully");
-                        location.reload();
-                        $("#companyModal").hide();
-
-
+                var vm =
+                    //var a = $("#companyForm").serialize();
+                    $.ajax({
+                        url: "/api/Company",
+                        method: "post",
+                        contentType: "application/json",
+                        //data: { name: name, rcNumber: rcNumber, address: address, email: email, phone: phone},
+                        data: JSON.stringify(vm)
                     })
-                    .fail(function () {
-                        toastr.error("Oga something is Wrong oh!");
-                        location.reload();
-                        $("#companyModal").hide();
+                        .done(function () {
+                            toastr.success("Save Successfully");
+                            location.reload();
+                            $("#companyModal").hide();
 
-                    });
+
+                        })
+                        .fail(function () {
+                            toastr.error("Oga something is Wrong oh!");
+                            location.reload();
+                            $("#companyModal").hide();
+
+                        });
                 return false;
             });
         }
